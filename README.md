@@ -27,9 +27,14 @@ This is a tech test for Brezaa.
 		"password": "password"
 	}
 ```
-3. GET /users/getAllSellers returns all users listed as seller user type without password data
+3. GET /users/getAllSellers returns all users listed as seller user type without password data but with id
 
-4. POST /review/?sellerId=id adds review to seller user
+4. POST /review/?sellerId=id adds review to seller user in format:
+```
+	{
+		"reviewValue": 5,
+		"comment": "they're a good seller"
+	}
 
 5. GET /getSellerReviews/?sellerId=id gets all reviews for that seller user
 
