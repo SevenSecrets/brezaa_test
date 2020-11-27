@@ -35,6 +35,7 @@ This is a tech test for Brezaa.
 		"reviewValue": 5,
 		"comment": "they're a good seller"
 	}
+```
 
 5. GET /getSellerReviews/?sellerId=id gets all reviews for that seller user
 
