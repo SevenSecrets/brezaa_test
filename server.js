@@ -41,6 +41,7 @@ app.post('/users/signup', (req, res) => {
 			User.create({ email: `${email}`, password: `${password}`, username: `${username}`, firstName: `${firstName}`, lastName: `${lastName}`, address: `${address}`, typeOfUser: `${typeOfUser}`, profession: `${profession}`, longitude: `${longitude}`, latitude: `${latitude}` }, (err, newUser) => {
 				if (err) throw err;
 			})
+
 			res.send({ email: `${email}`, password: `${password}`, username: `${username}`, firstName: `${firstName}`, lastName: `${lastName}`, address: `${address}`, typeOfUser: `${typeOfUser}`, profession: `${profession}`, longitude: `${longitude}`, latitude: `${latitude}` });
 		}
 
@@ -49,7 +50,15 @@ app.post('/users/signup', (req, res) => {
 });
 
 app.post('/users/login', (req, res) => {
+	// getting email and password from request
+	const { email, password } = req.body;
 
+	// grabbing user from db
+	User.findOne({ email: `${email}`, password: `${password}` }, 'email password', (err, user) => {
+		if (err) throw err;
+
+		res.send({ email: user.email, password: user.password })
+	})
 });
 
 app.get('/users/getAllSellers', (req, res) => {

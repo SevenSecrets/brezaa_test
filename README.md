@@ -39,4 +39,4 @@ This is a tech test for Brezaa.
 
 5. GET /getSellerReviews/?sellerId=id gets all reviews for that seller user
 
-6. GET /getNearestSellers?longitude=###&latitude=###&maxDistance=### returns closest seller
+6. GET /getNearestSellers?longitude=lon&latitude=lat&maxDistance=dist returns closest seller
