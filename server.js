@@ -26,6 +26,8 @@ app.get('/', (req, res) => {
 	res.send('Hello World!');
 });
 
+// /USERS/ Routes
+
 app.post('/users/signup', (req, res) => {
 	// creating user from request
 	const { email, password, username, firstName, lastName, address, typeOfUser, profession, longitude, latitude } = req.body;
@@ -43,9 +45,9 @@ app.post('/users/signup', (req, res) => {
 			})
 
 			res.send({ email: `${email}`, password: `${password}`, username: `${username}`, firstName: `${firstName}`, lastName: `${lastName}`, address: `${address}`, typeOfUser: `${typeOfUser}`, profession: `${profession}`, longitude: `${longitude}`, latitude: `${latitude}` });
+		} else {
+			res.send("user already exists");
 		}
-
-		res.send("user already exists")
 	});
 });
 
@@ -62,8 +64,33 @@ app.post('/users/login', (req, res) => {
 });
 
 app.get('/users/getAllSellers', (req, res) => {
+	// grabbing all users of type 1, which is the seller type
+	User.find({ typeOfUser: 1 }, 'id email username firstName lastName address typeOfUser profession longitude latitude', (err, users) => {
+		if (err) throw err;
 
+		let sellers = []
+
+		users.forEach((user) => {
+			sellers.push({ id: user.id, email: user.email, username: user.username, firstName: user.firstName, lastName: user.lastName, address: user.address, typeOfUser: user.typeOfUser, profession: user.profession, longitude: user.longitude, latitude: user.latitude });
+		})
+
+		res.send(sellers);
+	})
 });
+
+// /REVIEW/ Routes
+
+app.post('/review/', (req, res) => {
+	const { reviewValue, comment } = req.body;
+
+	// creates Review in db with relationship to seller user
+	Review.create({ seller: `${req.query.sellerId}`, reviewValue: `${reviewValue}`, comment: `${comment}` }, (err, review) => {
+		if (err) throw err;
+	});
+
+	// sends response with score and comment
+	res.send({ reviewValue: `${reviewValue}`, comment: `${comment}` });
+})
 
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}.`);
