@@ -2,6 +2,16 @@
 
 This is a tech test for Brezaa.
 
+## Usage
+
+First, set up the environment and database.
+
+1. Create a Mongo database, I'm using the Atlas cloud so the connection is to there. The password is hidden as an environment variable so set up a `.env` file with your database password inside as MONGODB_PASS.
+
+2. The database uses two collections named `users` and `reviews`. The schemas are already defined.
+
+3. Run the server using `npm start`. The server runs on port 3000.
+
 ### User Stories
 
 1. POST /users/signup returns user data in JSON format like:
