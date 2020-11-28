@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const findDistance = require('./lib/findDistance');
+const findClosest = require('./lib/findClosest');
 
 const User = require('./schema/user');
 const Review = require('./schema/review');
@@ -95,6 +97,7 @@ app.post('/review/', (req, res) => {
 app.get('/getSellerReviews/', (req, res) => {
 	const sellerId = req.query.sellerId;
 
+	// get all reviews matching the given seller id
 	Review.find({ seller: `${sellerId}` }, 'reviewValue comment', (err, reviews) => {
 		if (err) throw err;
 
@@ -106,6 +109,26 @@ app.get('/getSellerReviews/', (req, res) => {
 
 		res.send(sellerReviews);
 	})
+})
+
+// getNearestSellers Routes
+
+app.get('/getNearestSellers', (req, res) => {
+
+	// gets all sellers but only returns their lat/long
+	User.find({ typeOfUser: 1 }, 'longitude latitude', (err, users) => {
+		if (err) throw err;
+
+		let sellers = []
+
+		users.forEach((user) => {
+			sellers.push({ longitude: user.longitude, latitude: user.latitude });
+		})
+
+		const closestSeller = findClosest(sellers, req.query.longitude, req.query.latitude);
+	})
+
+	console.log(sellers);
 })
 
 app.listen(port, () => {
