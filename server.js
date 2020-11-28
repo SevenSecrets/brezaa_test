@@ -92,6 +92,22 @@ app.post('/review/', (req, res) => {
 	res.send({ reviewValue: `${reviewValue}`, comment: `${comment}` });
 })
 
+app.get('/getSellerReviews/', (req, res) => {
+	const sellerId = req.query.sellerId;
+
+	Review.find({ seller: `${sellerId}` }, 'reviewValue comment', (err, reviews) => {
+		if (err) throw err;
+
+		let sellerReviews = [];
+
+		reviews.forEach((review) => {
+			sellerReviews.push({ reviewValue: review.reviewValue, comment: review.comment });
+		})
+
+		res.send(sellerReviews);
+	})
+})
+
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}.`);
 });
