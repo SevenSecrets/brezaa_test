@@ -116,19 +116,19 @@ app.get('/getSellerReviews/', (req, res) => {
 app.get('/getNearestSellers', (req, res) => {
 
 	// gets all sellers but only returns their lat/long
-	User.find({ typeOfUser: 1 }, 'longitude latitude', (err, users) => {
+	User.find({ typeOfUser: 1 }, 'id longitude latitude username firstName lastName', (err, users) => {
 		if (err) throw err;
 
 		let sellers = []
 
 		users.forEach((user) => {
-			sellers.push({ longitude: user.longitude, latitude: user.latitude });
+			sellers.push({ id: user.id, longitude: user.longitude, latitude: user.latitude, username: user.username, firstName: user.firstName, lastName: user.lastName });
 		})
 
 		const closestSeller = findClosest(sellers, req.query.longitude, req.query.latitude);
-	})
 
-	console.log(sellers);
+		res.send(closestSeller);
+	})
 })
 
 app.listen(port, () => {
